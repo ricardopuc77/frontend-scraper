@@ -60,7 +60,6 @@ export default function App() {
       {loading && <p>Cargando…</p>}
       {err && <p className="text-red-600">{err}</p>}
       {!loading && !err && <DataTable rows={rows} />}
-      <DataTable rows={rows} />
     </main>
   );
 }

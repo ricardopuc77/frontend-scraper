@@ -18,9 +18,9 @@ export default function FilterBar({
 }: Props) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-      <FilterSelect label="Área" value={areaId} onChange={setAreaId} options={areas} />
-      <FilterSelect label="Institución" value={instId} onChange={setInstId} options={instituciones} />
-      <FilterSelect label="Puesto" value={puestoId} onChange={setPuestoId} options={puestos} />
+      <FilterSelect label="Área" value={areaId} onChange={setAreaId} options={areas} disabled={searching} />
+      <FilterSelect label="Institución" value={instId} onChange={setInstId} options={instituciones} disabled={searching} />
+      <FilterSelect label="Puesto" value={puestoId} onChange={setPuestoId} options={puestos} disabled={searching} />
       <label className="block md:col-span-2">
         <span className="text-sm text-gray-700">Nombre</span>
         <input

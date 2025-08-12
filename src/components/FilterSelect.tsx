@@ -6,10 +6,11 @@ type Props = {
   onChange: (value: string) => void;
   options: Option[];
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export default function FilterSelect({
-  label, value, onChange, options, placeholder = "Selecciona una opción",
+  label, value, onChange, options, placeholder = "Selecciona una opción", disabled = false
 }: Props) {
   return (
     <label className="block">
@@ -18,6 +19,7 @@ export default function FilterSelect({
         className="mt-1 w-full border rounded-lg p-2"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        disabled={disabled}
       >
         <option value="">{placeholder}</option>
         {options.map((o) => (
