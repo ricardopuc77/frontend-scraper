@@ -7,3 +7,9 @@ export type RowItem = {
   institucion: string;
   puesto: string;
 };
+
+export type GetResourceResponse = {
+  areas: Option[];
+  instituciones: Option[];
+  puestos: Option[];
+}
