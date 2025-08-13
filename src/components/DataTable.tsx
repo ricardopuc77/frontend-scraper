@@ -18,14 +18,18 @@ export default function DataTable({ rows }: { rows: RowItem[] }) {
         </thead>
         <tbody>
           {rows.map((r) => (
-            <tr key={r.id} className="border-b border-slate-100 hover:bg-slate-50/60">
+            <tr key={r.id}
+              className={`border-b ${r.status === 3
+                ? "bg-amber-50 hover:bg-amber-100 ring-1 ring-amber-200"
+                : "hover:bg-slate-50/60"
+                }`}>
               <Td>
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 rounded-lg bg-sky-50 p-2 text-sky-700">
                     <User2 className="size-4" />
                   </div>
                   <div className="min-w-[200px]">
-                    <div className="font-medium text-slate-900">{r.nombre}</div>
+                    <div className="font-medium text-slate-900"> {r.status === 3 ? "SIN NOMBRE" : r.nombre}</div>
                     <div className="text-xs text-slate-500 flex items-center gap-2">
                       <Building2 className="size-3" />
                       <span className="whitespace-normal break-words">{r.institucion}</span>

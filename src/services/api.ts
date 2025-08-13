@@ -19,7 +19,12 @@ const mapFuncionario = (f: FuncionarioApi): RowItem => ({
   telefono: f.telefono ?? "",
   direccion: f.direccion ?? "",
   createdAt: formatDate(f.created_at),
-  status: f.status ?? null,
+  status:
+    f.status == null
+      ? null
+      : typeof f.status === "string"
+        ? parseInt(f.status as any, 10)
+        : f.status,
 });
 
 
