@@ -1,14 +1,46 @@
 import axios from 'axios';
-import type { GetResourceResponse } from '../types';
+import type { FuncionarioApi, GetResourcesResponse, RowItem } from '../types';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
-  timeout: 10000,
+  timeout: 15000,
 });
 
+// Helpers
+const formatDate = (iso?: string | null) =>
+  iso ? new Intl.DateTimeFormat("es-MX", { dateStyle: "medium" }).format(new Date(iso)) : "";
+
+const mapFuncionario = (f: FuncionarioApi): RowItem => ({
+  id: f.id,
+  nombre: f.nombre ?? "",
+  area: f.area?.nombre ?? "",
+  institucion: f.institucion?.nombre ?? "",
+  puesto: f.puesto?.nombre ?? "",
+  telefono: f.telefono ?? "",
+  direccion: f.direccion ?? "",
+  createdAt: formatDate(f.created_at),
+  status: f.status ?? null,
+});
+
+
+// Endpoints
 export const getResources = async () => {
-  const { data } = await api.get<GetResourceResponse>('/funcionarios/getResources');
+  const { data } = await api.get<GetResourcesResponse>('/funcionarios/getResources');
   return data;
 }
+
+export type SearchParams = {
+  areaId?: string;
+  institucionId?: string;
+  puestoId?: string;
+  nombre?: string;
+  page?: number;
+  pageSize?: number;
+};
+
+export const searchFuncionarios = async (params: SearchParams) => {
+  const { data } = await api.get<FuncionarioApi[]>("/funcionarios", { params });
+  return data.map(mapFuncionario);
+};
 
 export default api;

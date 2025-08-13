@@ -25,7 +25,7 @@ export type RowItem = {
   status?: number | null;
 };
 
-export type GetResourceResponse = {
+export type GetResourcesResponse = {
   areas: Option[];
   instituciones: Option[];
   puestos: Option[];
