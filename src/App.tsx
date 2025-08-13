@@ -6,6 +6,7 @@ import { EmptyState, ErrorState, TableSkeleton } from "./components/States";
 import type { Option, RowItem, GetResourcesResponse } from "./types";
 import { getResources, searchFuncionarios } from "./services/api";
 import { useQuery } from "@tanstack/react-query";
+import { exportRowsToExcel } from "./utils/exportExcel";
 
 export default function App() {
   // Filtros
@@ -95,6 +96,40 @@ export default function App() {
   const first = total ? (page - 1) * limit + 1 : 0;
   const last = Math.min(page * limit, total);
 
+  const onExportAll = async () => {
+    const pageSize = Math.max(50, limit);
+    const collected: RowItem[] = [];
+    let p = 1;
+
+    try {
+      setLoading(true);
+      setErr(null);
+
+      while (true) {
+        const res = await searchFuncionarios({
+          areaId: areaId || undefined,
+          institucionId: instId || undefined,
+          puestoId: puestoId || undefined,
+          nombre: nombre || undefined,
+          page: p,
+          limit: pageSize,
+        });
+        collected.push(...res.rows);
+        const fetched = p * pageSize;
+        if (fetched >= res.total || res.rows.length === 0) break;
+        p++;
+      }
+
+      if (collected.length) {
+        exportRowsToExcel(collected, "funcionarios_filtrados.xlsx");
+      }
+    } catch {
+      setErr("No se pudo exportar los datos");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-dvh bg-gradient-to-b from-white to-slate-50 text-slate-900">
       <TopBar />
@@ -120,6 +155,16 @@ export default function App() {
         />
 
         <section className="rounded-2xl border border-slate-200 bg-white/70 backdrop-blur shadow-sm overflow-hidden">
+          {/* Barra de acciones */}
+          <div className="flex flex-wrap items-center gap-2 justify-end px-4 md:px-5 py-3 border-b border-slate-200 bg-white/60">
+            <button
+              onClick={onExportAll}
+              disabled={loading}
+              className="h-9 px-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 text-sm disabled:opacity-50"
+            >
+              Exportar
+            </button>
+          </div>
           {err ? (
             <ErrorState onRetry={() => runSearch(page, limit)} />
           ) : loading ? (
