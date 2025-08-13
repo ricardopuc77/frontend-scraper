@@ -1,31 +1,25 @@
 import type { Option } from "../types";
 
-type Props = {
-  label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: Option[];
-  placeholder?: string;
-  disabled?: boolean;
-}
-
 export default function FilterSelect({
-  label, value, onChange, options, placeholder = "Selecciona una opción", disabled = false
-}: Props) {
+  value, onChange, placeholder, options, disabled,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+  options: Option[];
+  disabled?: boolean;
+}) {
   return (
-    <label className="block">
-      <span className="text-sm text-gray-700">{label}</span>
-      <select
-        className="mt-1 w-full border rounded-lg p-2"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((o) => (
-          <option key={o.id} value={String(o.id)}>{o.nombre}</option>
-        ))}
-      </select>
-    </label>
+    <select
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      disabled={disabled}
+      className="h-10 w-full rounded-xl border border-slate-200/80 bg-white px-3 text-sm outline-none disabled:opacity-60 focus:ring-2 focus:ring-sky-500/20 focus:border-sky-600"
+    >
+      <option value="">{placeholder}</option>
+      {options.map((o) => (
+        <option key={o.id} value={String(o.id)}>{o.nombre}</option>
+      ))}
+    </select>
   );
 }
