@@ -25,6 +25,13 @@ export type RowItem = {
   status?: number | null;
 };
 
+export type PagedResponse<T> = {
+  data: T[];
+  total: number;
+  page: number;
+  limit: number;
+};
+
 export type GetResourcesResponse = {
   areas: Option[];
   instituciones: Option[];
